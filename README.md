@@ -1,6 +1,6 @@
 ### Hey , I'm Kevin G
 
-Hi, I'm Kevin! A Full-Stack Developer living in Ivory coast. I currently work full-time as a developer.
+Hi, I'm Guelade Kevin! A Full-Stack Developer living in Ivory coast. I currently work full-time as a developer.
 
 **Languages and Tools:**  
 
