@@ -219,6 +219,7 @@ export const deployments = [
     desc: { fr: 'Application mobile pour le fitness.', en: 'Fitness mobile application.' },
     stack: ['Flutter'],
     url: 'https://threesixty.fit',
+    image: 'img/three-sixty.jpg',
   },
   {
     name: 'BEAUTELIC',
