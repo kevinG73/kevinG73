@@ -1376,12 +1376,81 @@ a.deploy:hover {
 /* révélation à l'apparition (scroll) */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 [data-reveal].is-visible {
   opacity: 1;
   transform: none;
+}
+
+/* cascade fluide des éléments à l'intérieur d'un panneau / hero qui apparaît */
+.panel .tech,
+.panel .deploy,
+.panel .xp,
+.hero__kicker,
+.hero__name,
+.hero__role,
+.hero__brief,
+.hero__status {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.panel.is-visible .tech,
+.panel.is-visible .deploy,
+.panel.is-visible .xp,
+.hero.is-visible .hero__kicker,
+.hero.is-visible .hero__name,
+.hero.is-visible .hero__role,
+.hero.is-visible .hero__brief,
+.hero.is-visible .hero__status {
+  opacity: 1;
+  transform: none;
+}
+/* décalages successifs (stagger) dans chaque grille */
+.panel.is-visible :is(.tech, .deploy, .xp):nth-child(2) {
+  transition-delay: 0.05s;
+}
+.panel.is-visible :is(.tech, .deploy, .xp):nth-child(3) {
+  transition-delay: 0.1s;
+}
+.panel.is-visible :is(.tech, .deploy, .xp):nth-child(4) {
+  transition-delay: 0.15s;
+}
+.panel.is-visible :is(.tech, .deploy, .xp):nth-child(5) {
+  transition-delay: 0.2s;
+}
+.panel.is-visible :is(.tech, .deploy, .xp):nth-child(6) {
+  transition-delay: 0.25s;
+}
+.panel.is-visible :is(.tech, .deploy, .xp):nth-child(7) {
+  transition-delay: 0.3s;
+}
+.panel.is-visible :is(.tech, .deploy, .xp):nth-child(8) {
+  transition-delay: 0.35s;
+}
+.panel.is-visible :is(.tech, .deploy, .xp):nth-child(9) {
+  transition-delay: 0.4s;
+}
+.panel.is-visible :is(.tech, .deploy, .xp):nth-child(10) {
+  transition-delay: 0.45s;
+}
+.panel.is-visible :is(.tech, .deploy, .xp):nth-child(11) {
+  transition-delay: 0.5s;
+}
+/* hero : cascade du texte */
+.hero.is-visible .hero__name {
+  transition-delay: 0.08s;
+}
+.hero.is-visible .hero__role {
+  transition-delay: 0.16s;
+}
+.hero.is-visible .hero__brief {
+  transition-delay: 0.24s;
+}
+.hero.is-visible .hero__status {
+  transition-delay: 0.32s;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1391,9 +1460,17 @@ a.deploy:hover {
     animation: none !important;
     transition: none !important;
   }
-  [data-reveal] {
-    opacity: 1;
-    transform: none;
+  [data-reveal],
+  .panel .tech,
+  .panel .deploy,
+  .panel .xp,
+  .hero__kicker,
+  .hero__name,
+  .hero__role,
+  .hero__brief,
+  .hero__status {
+    opacity: 1 !important;
+    transform: none !important;
   }
   html {
     scroll-behavior: auto;
