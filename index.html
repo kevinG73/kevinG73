@@ -4,6 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#05090b" />
+    <!-- Applique le thème (système ou choix mémorisé) avant le rendu => aucun flash -->
+    <script>
+      (function () {
+        try {
+          var s = localStorage.getItem('portfolio-theme')
+          var t =
+            s === 'light' || s === 'dark'
+              ? s
+              : window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
+                ? 'light'
+                : 'dark'
+          document.documentElement.setAttribute('data-theme', t)
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark')
+        }
+      })()
+    </script>
     <!-- Anonymat : on demande aux moteurs de NE PAS indexer / archiver / suivre cette page. -->
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
     <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
