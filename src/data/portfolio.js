@@ -195,7 +195,14 @@ export const deployments = [
     },
     stack: ['Web', 'Mobile'],
     url: 'https://nalacare.be/',
-    // image: 'deployments/nalacare.jpg', // 👉 ajoute ta capture ici
+    image: 'img/nalacare.jpg',
+  },
+  {
+    name: 'DATUMS SARL',
+    desc: { fr: 'Site web d’entreprise.', en: 'Corporate website.' },
+    stack: ['Web'],
+    url: null, // 👉 ajoute l'URL si le site est en ligne
+    image: 'img/datumsarl.jpg',
   },
   {
     name: 'SCI KERLAUD',
@@ -205,6 +212,7 @@ export const deployments = [
     },
     stack: ['Vue.js', 'Shadcn', 'Tailwind CSS'],
     url: 'https://scikerlau.ci/',
+    image: 'img/scikerlau.jpg',
   },
   {
     name: 'THREE SIXTY GYM',

@@ -820,7 +820,7 @@ a {
   color: var(--ink);
   font-size: 15px;
   line-height: 1.8;
-  max-width: 760px;
+  max-width: 100%;
 }
 .hero__status {
   display: inline-flex;
