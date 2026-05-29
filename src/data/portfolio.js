@@ -304,6 +304,10 @@ export const award = {
     en: 'Team lead representing MIAGE on e-commerce and mobile-money payments in Africa. Two projects delivered with Spring Boot, WebSocket, Laravel and Vue.js.',
   },
   stack: ['Spring Boot', 'WebSocket', 'Laravel', 'Vue.js'],
+  link: {
+    label: { fr: 'Lire l’article', en: 'Read the article' },
+    url: 'https://digitalmag.ci/hackathon-de-cinetpay-miage-gi-fhb-remporte-le-grand-prix/',
+  },
 }
 
 // Navigation du HUD (ancres de défilement).

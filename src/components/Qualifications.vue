@@ -20,6 +20,15 @@ import { t, tk } from '../i18n.js'
         <div class="tags" style="margin-top: 10px">
           <span class="tag" v-for="tag in award.stack" :key="tag">{{ tag }}</span>
         </div>
+        <a
+          v-if="award.link"
+          class="mission__link"
+          :href="award.link.url"
+          target="_blank"
+          rel="noopener"
+        >
+          ▸ {{ t(award.link.label) }}
+        </a>
       </div>
     </div>
   </Panel>
