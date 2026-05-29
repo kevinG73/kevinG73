@@ -1,0 +1,3 @@
+# Anonymat : aucun robot ne doit explorer ni indexer ce site.
+User-agent: *
+Disallow: /

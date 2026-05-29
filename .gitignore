@@ -1,0 +1,15 @@
+# Dépendances
+node_modules/
+
+# Build
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / éditeur
+.DS_Store
+*.local
+.vscode/
+.idea/
