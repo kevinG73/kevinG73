@@ -201,8 +201,11 @@ export const deployments = [
   },
   {
     name: 'DATUMS SARL',
-    desc: { fr: 'Site web d’entreprise.', en: 'Corporate website.' },
-    stack: ['Web'],
+    desc: {
+      fr: 'Application web d’analyse de données géographiques.',
+      en: 'Web application for geographic data analysis.',
+    },
+    stack: ['Web', 'Data', 'GIS'],
     url: null, // 👉 ajoute l'URL si le site est en ligne
     image: 'img/datumsarl.jpg',
   },
