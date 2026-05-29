@@ -41,6 +41,7 @@ export const skills = [
       { name: 'Java', icon: 'java/java-original' },
       { name: 'Python', icon: 'python/python-original' },
       { name: 'Dart', icon: 'dart/dart-original' },
+      { name: 'Rust', icon: 'rust/rust-original', invert: true },
     ],
   },
   {
@@ -65,6 +66,7 @@ export const skills = [
       { name: 'MySQL', icon: 'mysql/mysql-original' },
       { name: 'PostgreSQL', icon: 'postgresql/postgresql-original' },
       { name: 'SQLite', icon: 'sqlite/sqlite-original' },
+      { name: 'DuckDB', icon: 'duckdb/duckdb-original' },
     ],
   },
   {
@@ -190,10 +192,10 @@ export const deployments = [
   {
     name: 'NALACARE',
     desc: {
-      fr: 'Application web et mobile.',
-      en: 'Web and mobile application.',
+      fr: 'Application mobile destinée aux utilisateurs en Belgique pour trouver rapidement une sage-femme.',
+      en: 'Mobile app for users in Belgium to quickly find a midwife.',
     },
-    stack: ['Web', 'Mobile'],
+    stack: ['Mobile'],
     url: 'https://nalacare.be/',
     image: 'img/nalacare.jpg',
   },

@@ -905,6 +905,10 @@ a {
 .tech__img--invert {
   filter: invert(1) brightness(1.25);
 }
+/* en mode clair, les logos noirs restent noirs (lisibles sur fond crème) */
+:root[data-theme='light'] .tech__img--invert {
+  filter: none;
+}
 .tech__glyph {
   width: 26px;
   height: 26px;
