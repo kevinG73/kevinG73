@@ -389,6 +389,33 @@ export const roleHook = {
   },
 }
 
+// ── ACCROCHE GÉOLOC ────────────────────────────────────────────────────
+// Le mot « Abidjan » devient cliquable : terminal avec de VRAIES commandes
+// de géolocalisation (coordonnées réelles d'Abidjan : 5.3599, -4.0083).
+export const geoHook = {
+  terminal: {
+    title: { fr: 'trace // abidjan', en: 'trace // abidjan' },
+    lines: [
+      {
+        cmd: 'curl -s ipinfo.io/json | jq -r .city,.loc',
+        out: { fr: 'Abidjan · 5.3599,-4.0083', en: 'Abidjan · 5.3599,-4.0083' },
+      },
+      {
+        cmd: 'geoiplookup "$(curl -s ifconfig.me)"',
+        out: { fr: 'GeoIP Country: CI, Côte d’Ivoire', en: 'GeoIP Country: CI, Ivory Coast' },
+      },
+      {
+        cmd: 'date +"%Z %z"',
+        out: { fr: 'GMT +0000 — heure locale = UTC', en: 'GMT +0000 — local time = UTC' },
+      },
+      {
+        cmd: 'echo "5°20′N 4°01′W"',
+        out: { fr: 'Cible verrouillée : 5°20′N · 4°01′W', en: 'Target locked: 5°20′N · 4°01′W' },
+      },
+    ],
+  },
+}
+
 // `code` = identifiant affiché dans la palette ⌘K. `key` = badge keycap de
 // saut de section (lettre de la section + numéro d'ordre).
 export const nav = [

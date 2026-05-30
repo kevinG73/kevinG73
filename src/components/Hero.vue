@@ -5,8 +5,17 @@ import { t, tk, locale } from '../i18n.js'
 import BriefHook from './BriefHook.vue'
 import SectionJump from './SectionJump.vue'
 import RoleHint from './RoleHint.vue'
+import GeoHint from './GeoHint.vue'
 
 const teamPhrase = { fr: 'Team-lead front-end', en: 'Front-end team lead' }
+
+// Découpe la ligne de localisation pour rendre « Abidjan » cliquable (géoloc).
+const locParts = computed(() => {
+  const full = t(identity.location)
+  const i = full.indexOf('Abidjan')
+  if (i === -1) return { ok: false }
+  return { ok: true, before: full.slice(0, i), after: full.slice(i + 7) }
+})
 
 // Découpe du bio autour des deux accroches : « Team-lead front-end » (cible de
 // la flèche) et « la performance, » (BriefHook). Réactif au FR/EN.
@@ -140,7 +149,13 @@ onUnmounted(() => {
     <div class="hero__body">
       <p class="hero__kicker">{{ tk('bio_label') }}</p>
       <h1 class="hero__name">{{ identity.callsign }}</h1>
-      <p class="hero__role">{{ t(identity.role) }} · {{ t(identity.location) }}</p>
+      <p class="hero__role">
+        {{ t(identity.role) }} ·
+        <template v-if="locParts.ok"
+          >{{ locParts.before }}<GeoHint label="Abidjan" />{{ locParts.after }}</template
+        >
+        <template v-else>{{ t(identity.location) }}</template>
+      </p>
       <p class="hero__brief">
         <template v-if="parts.ok"
           >{{ parts.s0 }}<span ref="leadEl" class="hero__lead">{{ parts.team }}</span
