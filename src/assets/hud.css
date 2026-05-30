@@ -876,6 +876,14 @@ a {
   grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
   gap: 8px;
 }
+/* la piste s'efface de la mise en page : ses cellules participent à la grille */
+.arsenal__track {
+  display: contents;
+}
+/* la copie dupliquée ne sert qu'au marquee mobile (2 classes : prime sur .tech) */
+.arsenal__track .tech--dup {
+  display: none;
+}
 .tech {
   display: flex;
   flex-direction: column;
@@ -924,6 +932,41 @@ a {
   color: var(--ink);
   text-align: center;
   line-height: 1.25;
+}
+/* sur mobile : défilement automatique horizontal (gauche → droite) */
+@media (max-width: 600px) {
+  .arsenal__grid {
+    display: block;
+    overflow: hidden;
+    /* fondu sur les bords pour masquer l'entrée/sortie des cellules */
+    -webkit-mask: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+    mask: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+  }
+  .arsenal__track {
+    display: flex;
+    width: max-content;
+    /* -50% = exactement une copie : la boucle redémarre sur une image identique */
+    animation: arsenal-marquee 32s linear infinite;
+  }
+  .arsenal__track .tech {
+    flex: 0 0 84px;
+    margin-right: 8px;
+  }
+  .arsenal__track .tech--dup {
+    display: flex;
+  }
+  /* hover survol = pause (utile aussi au doigt sur certains navigateurs) */
+  .arsenal__grid:hover .arsenal__track {
+    animation-play-state: paused;
+  }
+}
+@keyframes arsenal-marquee {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 .tags {
   display: flex;
@@ -1479,6 +1522,13 @@ a.deploy:hover {
   html {
     scroll-behavior: auto;
   }
+  /* mouvement réduit : pas de marquee, scroll manuel et copie masquée */
+  .arsenal__grid {
+    overflow-x: auto;
+  }
+  .tech--dup {
+    display: none !important;
+  }
 }
 
 /* ============================================================================
@@ -1996,9 +2046,4 @@ a.deploy:hover {
 .hud-theme:hover {
   color: var(--teal);
   border-color: var(--line-strong);
-}
-@media (max-width: 600px) {
-  .hud-theme {
-    display: none;
-  }
 }

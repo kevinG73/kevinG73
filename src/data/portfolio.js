@@ -94,7 +94,7 @@ export const systems = [
 export const missions = [
   {
     id: '01',
-    org: { fr: 'Prestataire de paiement (PSP)', en: 'Payment Service Provider' },
+    org: { fr: 'Société fintech (paiement en ligne)', en: 'Fintech company (online payments)' },
     role: { fr: 'Développeur Full-Stack · Team-lead Front-end', en: 'Full-Stack Developer · Front-end Team Lead' },
     period: { fr: 'Août 2023 — Présent', en: 'Aug 2023 — Present' },
     active: true,
@@ -129,20 +129,20 @@ export const missions = [
   },
   {
     id: '02',
-    org: { fr: 'Plateforme Mobile Money', en: 'Mobile Money Platform' },
+    org: { fr: 'Société de mobile money', en: 'Mobile money company' },
     role: { fr: 'Développeur Full-Stack', en: 'Full-Stack Developer' },
     period: { fr: 'Mars 2022 — Juillet 2023', en: 'Mar 2022 — Jul 2023' },
     active: false,
     signal: 121,
-    stack: ['Laravel', 'Vue.js', 'API REST', 'Google Maps'],
+    stack: ['Laravel', 'Vue.js', 'API REST'],
     log: [
       {
         fr: 'API REST de paiement : règlement de factures (eau & électricité), génération PDF / Excel.',
         en: 'Payment REST API: bill settlement (water & electricity), PDF / Excel generation.',
       },
       {
-        fr: 'App mobile de paiement : paiement eau & électricité, messagerie support, géolocalisation (Google Maps).',
-        en: 'Payment mobile app: water & electricity payment, support chat, geolocation (Google Maps).',
+        fr: 'App mobile de paiement : paiement eau & électricité, messagerie support.',
+        en: 'Payment mobile app: water & electricity payment, support chat.',
       },
       {
         fr: 'Applications web : site vitrine, monitoring des agents de collecte (coopérative d’épargne), back-office de gestion.',
