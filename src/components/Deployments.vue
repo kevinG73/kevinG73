@@ -2,15 +2,6 @@
 import Panel from './Panel.vue'
 import { deployments } from '../data/portfolio.js'
 import { t, tk } from '../i18n.js'
-
-// Monogramme de repli (initiales des 2 premiers mots) tant qu'aucune image n'est fournie.
-const monogram = (name) =>
-  name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join('')
-    .toUpperCase()
 </script>
 
 <template>
@@ -29,7 +20,9 @@ const monogram = (name) =>
 
         <div class="deploy__thumb">
           <img v-if="d.image" :src="d.image" :alt="d.name" loading="lazy" />
-          <span v-else class="deploy__mono">{{ monogram(d.name) }}</span>
+          <span v-else class="deploy__hazard" aria-hidden="true">
+            <span class="deploy__hz-mark">!</span>
+          </span>
           <span class="deploy__scan" />
         </div>
 

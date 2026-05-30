@@ -1870,13 +1870,50 @@ a.deploy:hover {
   height: 100%;
   object-fit: cover;
 }
-.deploy__mono {
+/* placeholder « hazard » (rayures animées) pour les déploiements sans image */
+.deploy__hazard {
+  --hz: #e8b730; /* jaune (défaut) */
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--hz) 0 11px,
+    rgba(6, 11, 13, 0.92) 11px 22px
+  );
+  background-size: 31.113px 31.113px; /* 22px·√2 → barber-pole sans couture */
+  animation: hz-slide 0.9s linear infinite;
+}
+.deploy:nth-child(3n + 2) .deploy__hazard {
+  --hz: #ff7a2c; /* orange */
+}
+.deploy:nth-child(3n) .deploy__hazard {
+  --hz: #34a9c9; /* cyan */
+}
+@keyframes hz-slide {
+  to {
+    background-position: 31.113px 0;
+  }
+}
+.deploy__hz-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  color: #fff;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 36px;
-  letter-spacing: 0.1em;
-  color: rgba(var(--ac), 0.6);
-  text-shadow: 0 0 18px rgba(var(--ac), 0.25);
+  font-size: 24px;
+}
+.deploy__hz-mark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 3px solid #fff;
+  background: rgba(6, 11, 13, 0.55);
+  transform: rotate(45deg);
 }
 .deploy__scan {
   position: absolute;
@@ -2046,4 +2083,351 @@ a.deploy:hover {
 .hud-theme:hover {
   color: var(--teal);
   border-color: var(--line-strong);
+}
+
+/* ============================================================================
+   ACCROCHE BIO — phrase interactive + flèche doodle + terminal HUD
+   ============================================================================ */
+/* hero au-dessus du panneau suivant pour que le terminal popover ne soit pas
+   masqué (les .panel créent un contexte d'empilement via backdrop-filter) */
+.hero {
+  z-index: 3;
+}
+.bhk {
+  position: relative;
+  display: inline-block;
+  line-height: 1.15;
+}
+.bhk__trigger {
+  position: relative;
+  z-index: 1;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 1px 3px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.bhk__trigger:hover,
+.bhk__trigger:focus-visible {
+  color: var(--teal);
+  outline: none;
+}
+
+/* cadre de sélection (type outil de design) + 8 poignées sur les bords */
+@property --bhk-beam {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+.bhk__frame {
+  position: absolute;
+  inset: -3px -4px;
+  border: 1.5px solid var(--teal);
+  isolation: isolate;
+  pointer-events: none;
+}
+/* flash lumineux qui court le long du tracé de la bordure */
+.bhk__frame::after {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--bhk-beam),
+    transparent 0deg 296deg,
+    rgba(var(--ac), 0.6) 320deg,
+    var(--teal-bright) 340deg,
+    #fff 350deg,
+    var(--teal-bright) 356deg,
+    transparent 360deg
+  );
+  /* on ne garde que l'anneau (= la ligne de bordure) */
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: bhk-beam 2.6s linear infinite;
+}
+@keyframes bhk-beam {
+  to {
+    --bhk-beam: 360deg;
+  }
+}
+.bhk__h {
+  position: absolute;
+  z-index: 1;
+  width: 7px;
+  height: 7px;
+  background: var(--teal);
+}
+.bhk__h.tl {
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+.bhk__h.tc {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.bhk__h.tr {
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+.bhk__h.lc {
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+.bhk__h.rc {
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+.bhk__h.bl {
+  bottom: 0;
+  left: 0;
+  transform: translate(-50%, 50%);
+}
+.bhk__h.bc {
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+.bhk__h.br {
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%);
+}
+
+/* terminal HUD déroulant — reste sombre quel que soit le thème (vrai « terminal ») */
+.bhk__term {
+  --panel-solid: #0a1418;
+  --line: rgba(64, 224, 208, 0.16);
+  --line-strong: rgba(64, 224, 208, 0.42);
+  --teal: #2fe0cf;
+  --alert: #ff5a2c;
+  --ink: #c7e6e0;
+  --ink-dim: #5a7d78;
+  --ac: 47, 224, 207;
+  position: absolute;
+  top: calc(100% + 14px);
+  /* ancré à gauche par défaut ; le composant ajuste `left` pour rester dans
+     le viewport (la phrase peut être en bord d'écran) */
+  left: 0;
+  z-index: 40;
+  width: max-content;
+  max-width: min(360px, 84vw);
+  font-family: var(--font-mono);
+  background: var(--panel-solid);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  transform-origin: top left;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+/* ouvert : épinglé (tap/clic) partout, ou survol/focus sur appareils à souris */
+.bhk.is-pinned .bhk__term,
+.rolehint.is-pinned .bhk__term {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+@media (hover: hover) {
+  .bhk:hover .bhk__term,
+  .bhk:focus-within .bhk__term,
+  .rolehint:hover .bhk__term,
+  .rolehint:focus-within .bhk__term {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+}
+/* petite équerre qui relie le terminal à la phrase */
+.bhk__term::before {
+  content: '';
+  position: absolute;
+  left: var(--bhk-arrow-x, 16px);
+  bottom: 100%;
+  width: 9px;
+  height: 9px;
+  background: var(--panel-solid);
+  border-left: 1px solid var(--line-strong);
+  border-top: 1px solid var(--line-strong);
+  transform: translateY(50%) rotate(45deg);
+}
+.bhk__term-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 11px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(var(--ac), 0.06);
+}
+.bhk__term-bar i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line-strong);
+}
+.bhk__term-bar i:first-child {
+  background: var(--alert);
+}
+.bhk__term-bar em {
+  margin-left: 6px;
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.bhk__term-body {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding: 13px 13px 15px;
+}
+.bhk__line {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.bhk__cmd {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--teal);
+}
+.bhk__cmd b {
+  margin-right: 6px;
+  font-weight: 400;
+  color: var(--alert);
+}
+.bhk__out {
+  padding-left: 13px;
+  border-left: 1px solid var(--line);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+/* ============================================================================
+   BADGE KEYCAP DE SAUT DE SECTION (« A1 » → scroll vers la section suivante)
+   ============================================================================ */
+.jump {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  margin: 20px 0 2px auto;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.jump__key,
+.rolehint__q {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  padding: 4px 8px;
+  border: 1.5px solid var(--alert);
+  border-radius: var(--radius);
+  background: rgba(255, 90, 44, 0.08);
+  color: var(--alert);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.jump:hover .jump__key,
+.jump:focus-visible .jump__key,
+.rolehint:hover .rolehint__q,
+.rolehint__q:focus-visible {
+  background: rgba(255, 90, 44, 0.2);
+  box-shadow: 0 0 14px rgba(255, 90, 44, 0.3);
+  outline: none;
+}
+
+/* ============================================================================
+   ACCROCHE RÔLE — badge « Découvrir c'est quoi ? » + courte flèche (haut-droite)
+   ============================================================================ */
+.rolehint {
+  position: absolute;
+  top: 24px;
+  right: 26px;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+}
+/* desktop : position calculée en JS (juste sous le paragraphe, sous le mot).
+   mobile (≤600) : coin haut-droite via les valeurs par défaut ci-dessus. */
+/* mot cible de la flèche (texte normal, légèrement repérable) */
+.hero__lead {
+  color: var(--white);
+}
+/* flèche : overlay couvrant tout le hero, tracé calculé en JS */
+.hero__leadarrow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  color: var(--alert);
+  pointer-events: none;
+  overflow: visible;
+}
+.hero__leadarrow-line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 1.5 9;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero__leadarrow-line {
+    animation: lead-march 0.7s linear infinite;
+  }
+}
+@keyframes lead-march {
+  to {
+    stroke-dashoffset: -10.5;
+  }
+}
+.jump__cue {
+  color: var(--ink-dim);
+  font-size: 10px;
+  animation: jump-bob 1.5s ease-in-out infinite;
+  transition: color 0.2s;
+}
+.jump:hover .jump__key,
+.jump:focus-visible .jump__key {
+  background: rgba(255, 90, 44, 0.2);
+  box-shadow: 0 0 14px rgba(255, 90, 44, 0.3);
+  outline: none;
+}
+.jump:hover .jump__cue {
+  color: var(--alert);
+}
+@keyframes jump-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deploy__hazard,
+  .jump__cue {
+    animation: none !important;
+  }
 }

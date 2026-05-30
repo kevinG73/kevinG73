@@ -1,5 +1,7 @@
 <script setup>
 // Panneau HUD réutilisable : cadre à coins crochetés + en-tête optionnel.
+import SectionJump from './SectionJump.vue'
+
 defineProps({
   title: String,
   meta: String,
@@ -18,6 +20,7 @@ defineProps({
     </header>
     <div class="panel__body">
       <slot />
+      <SectionJump v-if="id" :from="id" />
     </div>
   </section>
 </template>

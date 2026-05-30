@@ -18,6 +18,45 @@ export const identity = {
   },
 }
 
+// ── ACCROCHE BIO ───────────────────────────────────────────────────────
+// La phrase `phrase` (qui doit apparaître TELLE QUELLE dans identity.brief)
+// devient cliquable/survolable : un cadre de sélection l'encadre et un petit
+// terminal HUD s'ouvre avec les `lines` ci-dessous.
+// 👉 PLACEHOLDER : remplace ces lignes par TES vrais faits (techno + métrique).
+//    `cmd` = la « commande » affichée, `out` = la réponse (FR/EN).
+export const briefHook = {
+  phrase: {
+    fr: 'la performance,',
+    en: 'performance,',
+  },
+  terminal: {
+    title: { fr: 'limite // garbage collector', en: 'limit // garbage collector' },
+    lines: [
+      {
+        cmd: 'profile --gc',
+        out: {
+          fr: 'À forte charge, le garbage collector (Java, Go, C#) déclenche des pauses « stop-the-world » : la latence part en dents de scie et le p99 s’effondre.',
+          en: 'Under heavy load, the garbage collector (Java, Go, C#) triggers stop-the-world pauses: latency turns jagged and p99 collapses.',
+        },
+      },
+      {
+        cmd: 'solve --native',
+        out: {
+          fr: 'Passé ce seuil, aucun réglage de GC ne suffit : seul un langage à mémoire déterministe — C++ ou Rust — supprime les pauses et tient une latence stable, sous la milliseconde.',
+          en: 'Past that point no GC tuning is enough: only deterministic-memory languages — C++ or Rust — remove the pauses and hold stable, sub-millisecond latency.',
+        },
+      },
+      {
+        cmd: 'ref --eu',
+        out: {
+          fr: 'C’est le choix des systèmes critiques européens (paiement, fintech, trading) où la régularité prime sur le débit moyen — la voie sur laquelle je me spécialise.',
+          en: 'It’s the choice of European mission-critical systems (payments, fintech, trading) where consistency beats average throughput — the path I’m specialising in.',
+        },
+      },
+    ],
+  },
+}
+
 export const contact = {
   email: 'kevinguelade@gmail.com',
   location: { fr: 'Abidjan, Côte d’Ivoire', en: 'Abidjan, Ivory Coast' },
@@ -316,12 +355,48 @@ export const award = {
 }
 
 // Navigation du HUD (ancres de défilement).
+// ── ACCROCHE RÔLE ──────────────────────────────────────────────────────
+// Badge « ? » en haut à droite du nom : au survol, un terminal explique
+// précisément en quoi consiste le rôle de team-lead front-end.
+// 👉 PLACEHOLDER : ajuste ces lignes pour qu'elles décrivent EXACTEMENT ton rôle.
+export const roleHook = {
+  label: { fr: 'Découvrir c’est quoi ?', en: 'What is it?' },
+  terminal: {
+    title: { fr: 'rôle // team-lead front-end', en: 'role // front-end team lead' },
+    lines: [
+      {
+        cmd: 'whoami --role',
+        out: {
+          fr: 'Je pilote la couche front-end : architecture des composants, conventions de code et revues, montée en compétence de l’équipe.',
+          en: 'I drive the front-end layer: component architecture, code conventions and reviews, levelling up the team.',
+        },
+      },
+      {
+        cmd: 'ls responsabilites',
+        out: {
+          fr: 'Choix techniques (Vue, Nuxt, React), performance et accessibilité, cohérence du design-system, intégration des API.',
+          en: 'Tech decisions (Vue, Nuxt, React), performance and accessibility, design-system consistency, API integration.',
+        },
+      },
+      {
+        cmd: 'team --lead',
+        out: {
+          fr: 'Je fais le pont entre design, back-end et produit, et je tranche les arbitrages techniques côté front.',
+          en: 'I bridge design, back-end and product, and make the front-end technical calls.',
+        },
+      },
+    ],
+  },
+}
+
+// `code` = identifiant affiché dans la palette ⌘K. `key` = badge keycap de
+// saut de section (lettre de la section + numéro d'ordre).
 export const nav = [
-  { id: 'apercu', label: { fr: 'Aperçu', en: 'Overview' }, code: 'R5' },
-  { id: 'arsenal', label: { fr: 'Compétences', en: 'Skills' }, code: 'M7' },
-  { id: 'missions', label: { fr: 'Expérience', en: 'Experience' }, code: 'E2' },
-  { id: 'deploiements', label: { fr: 'Déploiements', en: 'Deployments' }, code: 'H3' },
-  { id: 'contact', label: { fr: 'Contact', en: 'Contact' }, code: 'Z9' },
+  { id: 'apercu', label: { fr: 'Aperçu', en: 'Overview' }, code: 'R5', key: 'A1' },
+  { id: 'arsenal', label: { fr: 'Compétences', en: 'Skills' }, code: 'M7', key: 'C2' },
+  { id: 'missions', label: { fr: 'Expérience', en: 'Experience' }, code: 'E2', key: 'E3' },
+  { id: 'deploiements', label: { fr: 'Déploiements', en: 'Deployments' }, code: 'H3', key: 'D4' },
+  { id: 'contact', label: { fr: 'Contact', en: 'Contact' }, code: 'Z9', key: 'X5' },
 ]
 
 // Localisation affichée dans l'en-tête (ville + fuseau IANA pour l'heure locale).
