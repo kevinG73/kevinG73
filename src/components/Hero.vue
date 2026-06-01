@@ -40,8 +40,10 @@ const leadEl = ref(null)
 const lineEl = ref(null)
 
 // Flèche du badge « Découvrir c'est quoi ? » JUSQU'À « Team-lead front-end » :
-// on descend par la marge droite (libre de texte) puis on rejoint le mot par
-// l'interligne ; la pointe (marker) atterrit sur le mot.
+// tracé en équerre arrondie qui sort par le bord du badge, longe la marge la
+// plus proche (libre de texte) par un segment vertical franc — gardé à gauche
+// de la pastille « ACTIF » pour ne jamais la traverser — puis rejoint le mot
+// par l'interligne ; la pointe (marker) atterrit sur le mot.
 const drawArrow = () => {
   const lead = leadEl.value
   const line = lineEl.value
@@ -74,16 +76,43 @@ const drawArrow = () => {
   const lr = lead.getBoundingClientRect()
   const qr = q.getBoundingClientRect()
 
-  const sx = qr.left + qr.width / 2 - hr.left
+  // côté de contournement = marge la plus proche du centre du badge
+  const cx = qr.left + qr.width / 2 - hr.left
+  const onLeft = cx < hr.width / 2
+
+  // départ sur le BORD du badge face à la marge → la flèche sort proprement
+  // sans barrer son propre libellé
+  const sx = onLeft ? qr.left - hr.left : qr.right - hr.left
   const sy = qr.top + qr.height / 2 - hr.top
-  // contournement par la marge la plus proche (libre de texte)
-  const onLeft = sx < hr.width / 2
-  const stripX = onLeft ? 16 : hr.width - 16
+
+  // couloir vertical collé à la marge ; à gauche, on le garde franchement à
+  // gauche de la pastille « ACTIF » pour ne jamais la traverser
+  let stripX = onLeft ? 16 : hr.width - 16
+  const status = host.querySelector('.hero__status')
+  if (onLeft && status) {
+    const aLeft = status.getBoundingClientRect().left - hr.left
+    stripX = Math.max(8, Math.min(stripX, aLeft - 12))
+  }
+
   // pointe sur le bord du mot face à la marge empruntée
   const ex = onLeft ? lr.left - hr.left - 5 : lr.right - hr.left + 5
   const ey = lr.bottom - hr.top + 1
 
-  line.setAttribute('d', `M ${sx},${sy} C ${stripX},${sy} ${stripX},${ey} ${ex},${ey}`)
+  // équerre arrondie : horizontale (bord du badge → marge), descente verticale
+  // franche le long de la marge, puis horizontale (marge → mot). Les coins sont
+  // adoucis par de courtes quadratiques.
+  const cs = Math.sign(sx - stripX) || 1
+  const ce = Math.sign(ex - stripX) || 1
+  const cv = Math.sign(ey - sy) || -1
+  const r = Math.max(
+    0,
+    Math.min(11, Math.abs(sx - stripX) / 2, Math.abs(ex - stripX) / 2, Math.abs(ey - sy) / 2),
+  )
+  line.setAttribute(
+    'd',
+    `M ${sx},${sy} H ${stripX + cs * r} Q ${stripX},${sy} ${stripX},${sy + cv * r} ` +
+      `V ${ey - cv * r} Q ${stripX},${ey} ${stripX + ce * r},${ey} H ${ex}`,
+  )
 }
 
 watch(parts, () => nextTick(drawArrow))
