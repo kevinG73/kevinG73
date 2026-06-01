@@ -41,9 +41,10 @@ const onKey = (e) => {
   if (e.key === 'Escape') pinned.value = false
 }
 
-// Révélation auto une seule fois : dès que l'utilisateur tente de scroller vers
-// le bas (molette / doigt / touches), on ouvre le terminal pour présenter le
-// propos sur la performance. Ensuite il se referme normalement (clic / Échap).
+// Tactile / mobile : révélation auto une seule fois : dès que l'utilisateur
+// tente de scroller vers le bas (molette / doigt / touches), on ouvre le
+// terminal pour présenter le propos sur la performance. (Sur desktop, il est
+// déjà ouvert d'emblée — voir onMounted.) Ensuite il se referme normalement.
 let revealed = false
 const removeScrollListeners = () => {
   window.removeEventListener('wheel', onFirstScroll)
@@ -66,14 +67,34 @@ const onFirstScroll = (e) => {
 watch(pinned, (v) => v && nextTick(place))
 watch(locale, () => nextTick(place))
 
+// Desktop = souris + nav complète affichée (le menu bascule en hamburger à
+// ≤ 940px, cf. hud.css). On exige aussi `hover: hover` pour ne pas ouvrir
+// d'office sur un grand écran tactile.
+const isDesktop = () => {
+  try {
+    return window.matchMedia('(hover: hover) and (min-width: 941px)').matches
+  } catch {
+    return false
+  }
+}
+
 onMounted(() => {
   document.addEventListener('click', onDocPointer)
   document.addEventListener('keydown', onKey)
-  window.addEventListener('wheel', onFirstScroll, { passive: true })
-  window.addEventListener('touchmove', onFirstScroll, { passive: true })
-  window.addEventListener('keydown', onFirstScroll)
   window.addEventListener('resize', place)
-  nextTick(place)
+  if (isDesktop()) {
+    // desktop : terminal ouvert par défaut (présente le propos sur la performance)
+    revealed = true // déjà ouvert → pas de révélation au scroll
+    pinned.value = true
+    nextTick(place)
+    setTimeout(place, 400) // recaler après la révélation du hero / chargement des polices
+  } else {
+    // tactile / mobile : ouverture au premier scroll vers le bas
+    window.addEventListener('wheel', onFirstScroll, { passive: true })
+    window.addEventListener('touchmove', onFirstScroll, { passive: true })
+    window.addEventListener('keydown', onFirstScroll)
+    nextTick(place)
+  }
 })
 onUnmounted(() => {
   document.removeEventListener('click', onDocPointer)
