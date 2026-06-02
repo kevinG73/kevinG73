@@ -2538,7 +2538,8 @@ a.deploy:hover {
   .hero__leadarrow,
   .rolehint,
   .geohint__arrow,
-  .bhk__term {
+  .bhk__term,
+  .site-footer {
     display: none !important;
   }
 
@@ -2578,8 +2579,7 @@ a.deploy:hover {
   .panel,
   .xp,
   .deploy,
-  .award,
-  .site-footer {
+  .award {
     break-inside: avoid;
   }
 }
