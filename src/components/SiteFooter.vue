@@ -16,7 +16,7 @@ const works = deployments.filter((d) => d.url)
 
       <div class="sf__contact">
         <p class="sf__blurb">{{ t(footer.blurb) }}</p>
-        <a class="sf__email" :href="`mailto:${contact.email}`">{{ contact.email }} →</a>
+        <a class="sf__email" data-contact :href="`mailto:${contact.email}`">{{ contact.email }} →</a>
       </div>
     </div>
 
@@ -40,7 +40,7 @@ const works = deployments.filter((d) => d.url)
         </a>
       </nav>
 
-      <nav class="sf__col">
+      <nav class="sf__col" data-contact>
         <span class="sf__col-title">Email</span>
         <a :href="`mailto:${contact.email}`">{{ contact.email }}</a>
       </nav>

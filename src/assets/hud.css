@@ -2495,3 +2495,88 @@ a.deploy:hover {
     stroke-dashoffset: -5.5;
   }
 }
+
+/* Bouton « Télécharger en PDF » — repose sur .hud-kbd, légère accentuation. */
+.hud-download {
+  color: var(--teal);
+}
+.hud-download:hover {
+  color: var(--teal-bright);
+  border-color: var(--line-strong);
+}
+
+/* ============================================================================
+   IMPRESSION → ÉCHANTILLON PDF (Upwork)
+   Le bouton ⤓ PDF appelle window.print(). Cette feuille produit un PDF propre,
+   fidèle au thème sombre (atout du portfolio), en retirant :
+   - le chrome interactif (en-tête, palette ⌘K, splash, badges de saut, flèches) ;
+   - les DÉTAILS DE CONTACT : email ([data-contact]) et CTA « Prendre contact »
+     (dans l'en-tête, masqué avec le reste du chrome) — conforme à la politique
+     Upwork qui interdit de partager ces coordonnées avant contrat.
+   ============================================================================ */
+@media print {
+  /* Conserver fonds & couleurs du thème (sinon le navigateur les supprime). */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  html,
+  body {
+    background: var(--bg) !important;
+  }
+  /* Couches décoratives fixes : ne s'impriment pas proprement page par page. */
+  body::before,
+  body::after {
+    display: none !important;
+  }
+
+  /* Chrome interactif + CTA de contact + ornements positionnés en JS. */
+  .hud-header,
+  .boot,
+  .cmd,
+  .jump,
+  .hero__leadarrow,
+  .rolehint,
+  .geohint__arrow,
+  .bhk__term {
+    display: none !important;
+  }
+
+  /* Détails de contact interdits par Upwork (email du footer). */
+  [data-contact] {
+    display: none !important;
+  }
+
+  /* Neutraliser la révélation au défilement : hors écran, les sections sont à
+     opacity:0 et ne s'impriment pas. On force TOUT en état « visible ». */
+  [data-reveal],
+  [data-reveal].is-visible,
+  .panel .tech,
+  .panel .deploy,
+  .panel .xp,
+  .hero__kicker,
+  .hero__name,
+  .hero__role,
+  .hero__brief,
+  .hero__status {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .page {
+    padding: 0 !important;
+    gap: 14px !important;
+  }
+  /* Éviter de couper les cartes/blocs au milieu d'une page. */
+  .panel,
+  .xp,
+  .deploy,
+  .award,
+  .site-footer {
+    break-inside: avoid;
+  }
+  @page {
+    margin: 12mm;
+  }
+}

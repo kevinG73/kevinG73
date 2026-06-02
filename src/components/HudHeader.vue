@@ -25,6 +25,12 @@ onMounted(() => {
   timer = setInterval(tick, 1000)
 })
 onUnmounted(() => clearInterval(timer))
+
+// Génère un PDF « échantillon de travail » via la boîte d'impression du
+// navigateur (Enregistrer au format PDF). La feuille @media print masque le
+// chrome interactif et les coordonnées (email, CTA) pour respecter la politique
+// Upwork : pas de détails de contact partagés avant contrat.
+const downloadPdf = () => window.print()
 </script>
 
 <template>
@@ -50,6 +56,16 @@ onUnmounted(() => clearInterval(timer))
 
       <button class="hud-kbd" type="button" @click="emit('open-cmd')" aria-label="Recherche">
         ⌕ ⌘K
+      </button>
+
+      <button
+        class="hud-kbd hud-download"
+        type="button"
+        @click="downloadPdf"
+        :aria-label="tk('download_pdf')"
+        :title="tk('download_pdf')"
+      >
+        ⤓ PDF
       </button>
 
       <button
