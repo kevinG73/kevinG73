@@ -2564,8 +2564,14 @@ a.deploy:hover {
     transition: none !important;
   }
 
+  /* PDF plein cadre : aucune marge blanche du navigateur, le thème sombre va
+     jusqu'au bord. On garde une respiration interne pour ne pas coller le texte
+     à la coupe. */
+  @page {
+    margin: 0;
+  }
   .page {
-    padding: 0 !important;
+    padding: 12mm 10mm !important;
     gap: 14px !important;
   }
   /* Éviter de couper les cartes/blocs au milieu d'une page. */
@@ -2575,8 +2581,5 @@ a.deploy:hover {
   .award,
   .site-footer {
     break-inside: avoid;
-  }
-  @page {
-    margin: 12mm;
   }
 }
